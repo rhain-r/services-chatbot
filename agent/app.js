@@ -317,7 +317,11 @@ async function sendMessage(text) {
 els.composer.addEventListener("submit", (e) => { e.preventDefault(); sendMessage(els.input.value); });
 els.input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(els.input.value); } });
 els.stop.addEventListener("click", () => controller?.abort());
-function autosize() { els.input.style.height = "auto"; els.input.style.height = Math.min(els.input.scrollHeight, 120) + "px"; }
+function autosize() {
+  els.input.style.height = "auto";
+  const border = els.input.offsetHeight - els.input.clientHeight; // scrollHeight excludes the border; box-sizing is border-box
+  els.input.style.height = Math.min(els.input.scrollHeight + border, 120) + "px";
+}
 els.input.addEventListener("input", autosize);
 
 // ─── Widget open / close ─────────────────────────────────────────────────────
